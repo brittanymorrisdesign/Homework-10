@@ -55,7 +55,7 @@ const outputPath = path.resolve(__dirname, 'output', 'team.html');
     });
 };
 
-const promptUserEngineer = () => {
+promptUserEngineer = () => {
     console.log("Create a new engineer profile.")
     return inquirer
       .prompt([
@@ -80,7 +80,7 @@ const promptUserEngineer = () => {
             name: "github",
 }
 
-const promptUserIntern = () => {
+promptUserIntern = () => {
     console.log("Create a new intern profile.")
     return inquirer
       .prompt([
@@ -109,6 +109,8 @@ const promptUserIntern = () => {
 
 
 
-fs.writeFileSync(outputPath), "utf-8");
+fs.writeFileSync(outputPath), 'utf-8');
 
 managerPrompt();
+promptUserIntern();
+promptUserEngineer();

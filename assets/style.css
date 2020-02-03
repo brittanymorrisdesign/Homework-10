@@ -2,17 +2,8 @@
   box-sizing: border-box;
 }
 
-/* The navigation bar */
-.navbar {
-  width: 100%;
-  padding: 0px 0px;
-  margin: 0 auto;
-  height: 80px;
-}
-.navbar-dark {
-  background-color: #4682B4 !important;
-  height: 85px;
-  color: white;
+#main-body {
+  height: 100vh;
 }
 
 body {
@@ -93,14 +84,6 @@ a:hover, a:active {
 
 nav {
   background-color: #f1f1f1;
-}
-
-.container-fluid {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
 }
 
 .card-header {
