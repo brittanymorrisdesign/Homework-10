@@ -1,0 +1,169 @@
+* {
+  box-sizing: border-box;
+}
+
+/* The navigation bar */
+.navbar {
+  width: 100%;
+  padding: 0px 0px;
+  margin: 0 auto;
+  height: 80px;
+}
+.navbar-dark {
+  background-color: #4682B4 !important;
+  height: 85px;
+  color: white;
+}
+
+body {
+  background-image: url("./images/Frostcopy.png");
+  background-position: center center;
+  background-repeat: repeat;
+  background-attachment: fixed;
+  height: 600px;
+  font-family: 'Metrophobic', sans-serif;
+  background-position: top center !important;
+  background-size: cover;
+}
+
+/* ---------  Fonts */
+h1, h2, h3, h4, h5 {
+  color: #6a6a6a;
+  font-family: "Roboto", sans-serif;
+  margin: 0;
+}
+
+h1 {
+  font-size: 2rem;
+}
+
+@media screen and (min-width: 576px) {
+  h1 {
+    font-size: 2.5rem;
+  }
+}
+
+h2 {
+  font-size: 1.5rem;
+}
+
+@media screen and (min-width: 576px) {
+  h2 {
+    font-size: 1.875rem;
+  }
+}
+
+h3 {
+  font-weight: normal;
+  font-size: .9rem;
+  text-transform: uppercase;
+}
+
+@media screen and (min-width: 767px) {
+  h3 {
+    font-size: 1.17rem;
+  }
+}
+
+strong {
+  color: #000;
+}
+
+p, ul, li, a {
+  font-family: "Roboto", sans-serif;
+  margin: 0;
+  color: #777;
+}
+
+ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+a {
+  text-decoration: none;
+  -webkit-transition: .4s all;
+  transition: .4s all;
+}
+
+a:hover, a:active {
+  text-decoration: none;
+  color: black;
+}
+
+nav {
+  background-color: #f1f1f1;
+}
+
+.container-fluid {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
+
+.card-header {
+  background-color: #332433;
+}
+.wrapper {
+  width: 90%;
+  max-width: 960px;
+  margin: 0 auto;
+}
+
+.wrapper .card {
+  position: relative;
+  margin: 8% 4%;
+  width: 100%;
+}
+
+@media (min-width: 500px) {
+  .wrapper .card {
+    margin
+    width: 42%;
+  }
+}
+
+@media (min-width: 900px) {
+  .wrapper .card {
+    width: 25.333%;
+  }
+}
+
+.wrapper .card i {
+  position: absolute;
+  top: -32px;
+  left: calc(50% - 32px);
+  border-radius: 50%;
+  padding: 1.5em;
+  color: #fff;
+}
+
+.wrapper .card .title {
+  background-color: #f1f1f1;
+}
+
+.manager-icon {
+  background-color: #00b1ff;
+}
+
+.manager-title, .manager-link {
+  color: #00b1ff;
+}
+
+.engineer-icon {
+  background-color: #ff4565;
+}
+
+.engineer-title, .engineer-link {
+  color: #ff4565;
+}
+
+.intern-icon {
+  background-color: #58d458;
+}
+
+.intern-title, .intern-link {
+  color: #58d458;
+}
