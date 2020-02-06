@@ -2,6 +2,7 @@
 const inquirer = require('inquirer');
 const util = require('util');
 const fs = require('fs');
+const path = require('path');
 
 // Classes
 const Manager = require('./lib/manager');
@@ -12,6 +13,10 @@ const Intern = require('./lib/intern');
 const managerCard = require('./templates/managerhtml');
 const engineerCard = require('./templates/engineerhtml');
 const internCard = require('./templates/internhtml');
+const generateHtml = require('./templates/main');
+
+// Places Html in output folder
+const outputPath = path.resolve(__dirname, 'output', 'gnerateTeam.html');
 
 const fullTeam = [];
 
@@ -53,17 +58,17 @@ function managerPrompt() {
       const managerCardHtml = managerCard(managerObj);
 
       fullTeam.push(managerCardHtml);
-      promptMain();
+      mainPrompt();
     });
 }
 
 // Main App
-function promptMain() {
+function mainPrompt() {
   inquirer
     .prompt([
       {
         type: 'list',
-        name: 'userChoice',
+        name: 'userPrompt',
         message: 'What would you like to do?',
         choices: [
           'Add an Engineer',
@@ -73,21 +78,25 @@ function promptMain() {
       },
     ])
     .then(answers => {
-      // console.log(answers.userChoice);
-      // create a switch statement to choose between engineer, intern, or build team
-      switch (answers.userChoice) {
-        case 'Add an Engineer': {
-          engineerPrompt();
-          break;
-        }
-        case 'Add an Intern': {
-          internPrompt();
-          break;
-        }
-        case "I'm all done. Let's see my team!": {
-          promptMain();
-          break;
-        }
+      switch (answers.userPrompt) {
+        case 1:
+          'Add an Engineer';
+          {
+            engineerPrompt();
+            break;
+          }
+        case 2:
+          'Add an Intern';
+          {
+            internPrompt();
+            break;
+          }
+        case 3:
+          'Show my team!';
+          {
+            generateTeam();
+            break;
+          }
       }
     });
 }
@@ -131,11 +140,9 @@ function engineerPrompt() {
         engineerEmail,
         engineerGithub
       );
-      // console.log(engineerObj);
       const engineerCardHtml = engineerCard(engineerObj);
-      // console.log(engineerCardHtml);
       fullTeam.push(engineerCardHtml);
-      promptMain();
+      mainPrompt();
     });
 }
 
@@ -177,15 +184,14 @@ function internPrompt() {
       const internCardHtml = internCard(internObj);
 
       fullTeam.push(internCardHtml);
-      promptMain();
+      mainPrompt();
     });
 }
 
-function buildTeam() {
-  // remove commas from the array
-  const joinedTeam = fullTeam.join('');
+function generateTeam() {
+  const createTeam = fullTeam.join('');
 
-  fs.writeFileSync(outputPath, mainRender(joinedTeam), 'utf-8');
+  fs.writeFileSync(outputPath, generateHtml(createTeam, 'utf-8'));
 }
 
 managerPrompt();
