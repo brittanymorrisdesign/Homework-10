@@ -3,11 +3,16 @@ const inquirer = require('inquirer');
 const util = require('util');
 const fs = require('fs');
 
-// Classes
 const Manager = require('./lib/manager');
 const Engineer = require('./lib/engineer');
 const Intern = require('./lib/intern');
-const Employee = require('./lib/Employee');
+const employee = require('./lib/employee');
+const engineerCard = require('./lib/employee');
+const internCard = require('./lib/employee');
+const managerCard = require('./lib/employee');
+
+const readFileAsync = util.promisify(fs.readFile);
+const writeFileAsync = util.promisify(fs.writeFile);
 
 const fullTeam = [];
 
@@ -37,8 +42,23 @@ function managerPrompt() {
   ]);
 }
 
-function engineerPrompt() {
-  return inquirer.prompt([
+function mainPrompt() {
+  inquirer.prompt([
+    {
+      type: 'list',
+      name: 'member',
+      message: 'Which type of team member would you like to add?',
+      choices: [
+        'Engineer',
+        'Intern',
+        'I dont want to add any more team members',
+      ],
+    },
+  ]);
+}
+
+function prompEngineer() {
+  inquirer.prompt([
     {
       type: 'input',
       message: 'Enter the name:',
@@ -62,8 +82,8 @@ function engineerPrompt() {
   ]);
 }
 
-function promptIntern() {
-  return inquirer.prompt([
+function prompIntern() {
+  inquirer.prompt([
     {
       type: 'input',
       message: 'Enter the name:',
@@ -85,31 +105,5 @@ function promptIntern() {
       name: 'internSchool',
     },
   ]);
+  managerPrompt();
 }
-
-function mainPrompt() {
-  return inquirer
-    .prompt([
-      {
-        type: 'list',
-        name: 'member',
-        message: 'Which type of team member would you like to add?',
-        choices: [
-          'Engineer',
-          'Intern',
-          'I dont want to add any more team members',
-        ],
-      },
-    ])
-    .then(answer => {
-      if (answer.type === 'Engineer') {
-        engineerPrompt();
-      } else if (answer.type === 'Intern') {
-        promptIntern();
-      } else {
-        generateHTML(fullTeam);
-      }
-    });
-}
-
-managerPrompt();
