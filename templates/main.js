@@ -1,70 +1,50 @@
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title p-5>Team Profile</title p-5>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
-        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    <script src="https://kit.fontawesome.com/7b4d2fea99.js" crossorigin="anonymous"></script>
-    <link rel="stylesheet" href="/assets/style.css">
-</head>
-<div class="card-body" id="main-body">
-    <h2 class="card-title text-center  text-info">My Team</h2>
-
-    <div class="card-columns mx-auto">
-        <div class="card text-center">
-            <div class="card-body">
-                <i class="fas fa-mug-hot team-icon manager-icon shadow"></i>
-                <div class="title py-5 px-3">
-                    <h2>Name</h2>
-                    <h3 class="manager-title">Manager</h3>
+function mainHTML(data) {
+  return ` <!DOCTYPE html>
+    <html lang="en">
+    
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+        <title>My Team</title>
+        <link href="https://stackpath.bootstrapcdn.com/bootswatch/4.4.1/flatly/bootstrap.min.css" rel="stylesheet" integrity="sha384-yrfSO0DBjS56u5M+SjWTyAHujrkiYVtRYh2dtB3yLQtUz3bodOeialO59u5lUCFF" crossorigin="anonymous">
+        <link rel="stylesheet" href="style.css">
+        <script src="https://kit.fontawesome.com/c502137733.js"></script>
+        <style>
+            .jumbotron {
+                background-color: #443850;
+            }
+            body {
+                background-color: white;
+            }
+            h1 {
+                color: white;
+            }
+            .card-header, .card-body {
+                background-color: white;
+            }
+        </style>
+    </head>
+    
+    <body>
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-12 jumbotron mb-3 team-heading">
+                    <h1 class="text-center">My Team</h1>
                 </div>
-                <ul class="p-4">
-                    <li>ID: 1234</li>
-                    <li>Email: <a href="mailto:test@test.com" target="_top" class="manager-link">test@test.com</a>
-                    </li>
-                    <li>Office Number: 1234</li>
-                </ul>
             </div>
         </div>
-
-        <div class="card text-center">
-            <div class="card-body">
-                <i class="fas fa-glasses team-icon engineer-icon shadow"></i>
-                <div class="title py-5 px-3">
-                    <h2>Name</h2>
-                    <h3 class="engineer-title">Engineer</h3>
+        <div class="container">
+            <div class="row">
+                <div class="team-area col-12 d-flex justify-content-center">
+                    ${data}
                 </div>
-                <ul class="p-4">
-                    <li>ID: 1234</li>
-                    <li>Email: <a href="mailto:test@test.com" target="_top" class="engineer-link">test@test.com</a>
-                    </li>
-                    <li>GitHub: <a href="https://github.com/brittanymorrisdesign"
-                            class="engineer-link">brittanymorrisdesign</a>
-                    </li>
-                </ul>
             </div>
         </div>
-
-        <div class="card text-center">
-            <div class="card-body">
-                <i class="fas fa-graduation-cap team-icon intern-icon shadow"></i>
-                <div class="title py-5 px-3">
-                    <h2>Name</h2>
-                    <h3 class="intern-title">Intern</h3>
-                </div>
-                <ul class="p-4">
-                    <li>ID: 1234</li>
-                    <li>Email: <a href="mailto:test@test.com" target="_top" class="intern-link">test@test.com</a>
-                    </li>
-                    <li>School: Upenn</li>
-                </ul>
-            </div>
-        </div>
-    </div>
-</body>
-</div>
-
-</html>
+    </body>
+    
+    </html>
+`;
+}
+// Export
+module.exports = mainHTML;

@@ -21,6 +21,7 @@
   },
   "homepage": "https://github.com/brittanymorrisdesign/Homework-10#readme",
   "dependencies": {
-    "inquirer": "^7.0.4"
+    "inquirer": "^7.0.4",
+    "path": "^0.12.7"
   }
 }
