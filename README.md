@@ -15,7 +15,7 @@ so that I have quick access to emails and GitHub profiles
 * Javascript
 * Node.js
 * Css
-*npm modules
+* npm modules
 
 # Dependencies
 * Inquirer
