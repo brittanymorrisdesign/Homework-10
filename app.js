@@ -1,6 +1,5 @@
 // npm packages
 const inquirer = require('inquirer');
-const util = require('util');
 const fs = require('fs');
 const path = require('path');
 
@@ -8,190 +7,240 @@ const path = require('path');
 const Manager = require('./lib/manager');
 const Engineer = require('./lib/engineer');
 const Intern = require('./lib/intern');
-
-// Cards
-const managerCard = require('./templates/managerhtml');
-const engineerCard = require('./templates/engineerhtml');
-const internCard = require('./templates/internhtml');
-const generateHtml = require('./templates/main');
-
-// Places Html in output folder
-const outputPath = path.resolve(__dirname, 'output', 'gnerateTeam.html');
+const generateHtml = require('./lib/generateHTML');
 
 const fullTeam = [];
 
 // Create a manager
-function managerPrompt() {
-  console.log('Add a manager');
-  return inquirer
-    .prompt([
-      {
-        type: 'input',
-        name: 'managerName',
-        message: 'What is your Managers Name?',
-      },
-      {
-        type: 'input',
-        name: 'managerId',
-        message: 'What is the employee id?',
-      },
-      {
-        type: 'input',
-        name: 'managerEmail',
-        message: 'What is your managers email?',
-      },
-      {
-        type: 'input',
-        name: 'officeNumber',
-        message: 'What is your managers office number?',
-      },
-    ])
-    .then(answers => {
-      const { managerName, managerId, managerEmail, officeNumber } = answers;
-      const managerObj = new Manager(
-        managerName,
-        managerId,
-        managerEmail,
-        officeNumber
-      );
-
-      const managerCardHtml = managerCard(managerObj);
-
-      fullTeam.push(managerCardHtml);
-      mainPrompt();
-    });
-}
-
-// Main App
-function mainPrompt() {
-  inquirer
-    .prompt([
-      {
-        type: 'list',
-        name: 'userPrompt',
-        message: 'What would you like to do?',
-        choices: [
-          'Add an Engineer',
-          'Add an Intern',
-          "I'm all done. Let's see my team!",
-        ],
-      },
-    ])
-    .then(answers => {
-      switch (answers.userPrompt) {
-        case 1:
-          'Add an Engineer';
-          {
-            engineerPrompt();
-            break;
-          }
-        case 2:
-          'Add an Intern';
-          {
-            internPrompt();
-            break;
-          }
-        case 3:
-          'Show my team!';
-          {
-            generateTeam();
-            break;
-          }
-      }
-    });
-}
+const promptManager = [
+  {
+    type: 'input',
+    name: 'managerName',
+    message: 'What is your Managers name?',
+    validate(value) {
+      const valid = isNaN(value);
+      return valid || 'Please enter a name.';
+    },
+  },
+  {
+    type: 'input',
+    name: 'mnagerId',
+    message: 'What is the employee id?',
+    validate(value) {
+      const valid = !isNaN(parseFloat(value));
+      return valid || 'Please enter a number.';
+    },
+  },
+  {
+    type: 'input',
+    name: 'email',
+    message: 'What is your managers email?',
+    validate(value) {
+      const valid = isNaN(value);
+      return valid || 'Please enter an email.';
+    },
+  },
+  {
+    type: 'input',
+    name: 'officeNumber',
+    message: 'What is your managers office number?',
+    validate(value) {
+      const valid = !isNaN(parseFloat(value));
+      return valid || 'Please enter a number.';
+    },
+  },
+];
 
 // Create an engineer
-function engineerPrompt() {
-  console.log('Add a new Engineer');
-  return inquirer
-    .prompt([
-      {
-        type: 'input',
-        message: 'Enter the name:',
-        name: 'engineerName',
-      },
-      {
-        type: 'input',
-        message: 'Enter the id:',
-        name: 'engineerId',
-      },
-      {
-        type: 'input',
-        message: 'Enter the email:',
-        name: 'engineerEmail',
-      },
-      {
-        type: 'input',
-        message: 'Enter GitHub username:',
-        name: 'engineerGithub',
-      },
-    ])
-    .then(answers => {
-      const {
-        engineerName,
-        engineerId,
-        engineerEmail,
-        engineerGithub,
-      } = answers;
-      const engineerObj = new Engineer(
-        engineerName,
-        engineerId,
-        engineerEmail,
-        engineerGithub
-      );
-      const engineerCardHtml = engineerCard(engineerObj);
-      fullTeam.push(engineerCardHtml);
-      mainPrompt();
-    });
-}
+const promptEngineer = [
+  {
+    type: 'input',
+    name: 'name',
+    message: 'Enter the name:',
+    validate(value) {
+      const valid = isNaN(value);
+      return valid || 'Please enter a name.';
+    },
+  },
+  {
+    type: 'input',
+    name: 'id',
+    message: 'Enter the id:',
+    validate(value) {
+      const valid = !isNaN(parseFloat(value));
+      return valid || 'Please enter a number.';
+    },
+  },
+  {
+    type: 'input',
+    name: 'email',
+    message: 'Enter the email:',
+    validate(value) {
+      const valid = isNaN(value);
+      return valid || 'Please enter an email.';
+    },
+  },
+  {
+    type: 'input',
+    name: 'extraInformation',
+    message: 'Enter GitHub username:',
+    validate(value) {
+      const valid = isNaN(value);
+      return valid || 'Please enter a username.';
+    },
+  },
+];
 
 // Create an intern
-function internPrompt() {
-  console.log('Add a new intern');
-  return inquirer
-    .prompt([
-      {
-        type: 'input',
-        message: 'Enter the name:',
-        name: 'internName',
-      },
-      {
-        type: 'input',
-        message: 'Enter the id:',
-        name: 'internId',
-      },
-      {
-        type: 'input',
-        message: 'Enter the email:',
-        name: 'internEmail',
-      },
-      {
-        type: 'input',
-        message: 'Enter the school:',
-        name: 'internSchool',
-      },
-    ])
-    .then(answers => {
-      const { internName, internId, internEmail, internSchool } = answers;
-      const internObj = new Intern(
-        internName,
-        internId,
-        internEmail,
-        internSchool
-      );
+const promptIntern = [
+  {
+    type: 'input',
+    name: 'name',
+    message: 'Enter the name:',
+    validate(value) {
+      const valid = isNaN(value);
+      return valid || 'Please enter a name.';
+    },
+  },
+  {
+    type: 'input',
+    name: 'internId',
+    message: 'Enter the Id:',
+    validate(value) {
+      const valid = !isNaN(parseFloat(value));
+      return valid || 'Please enter a number.';
+    },
+  },
+  {
+    type: 'input',
+    name: 'internEmail',
+    message: 'Enter the email:',
+    validate(value) {
+      const valid = isNaN(value);
+      return valid || 'Please enter an email.';
+    },
+  },
+  {
+    type: 'input',
+    name: 'internSchool',
+    message: 'Enter the school:',
+    validate(value) {
+      const valid = isNaN(value);
+      return valid || 'Please enter a school.';
+    },
+  },
+];
 
-      const internCardHtml = internCard(internObj);
+// Additional Employees
+const promptMember = {
+  type: 'list',
+  name: 'userPrompt',
+  message: 'What would you like to do?',
+  choices: ['Add an Engineer', 'Add an Intern', 'Show my Team!'],
+};
 
-      fullTeam.push(internCardHtml);
-      mainPrompt();
+// Create a team
+const createNewTeamMember = member => {
+  switch (member) {
+    case 'Manager':
+      inquirer
+        .prompt(promptManager)
+        .then(response => {
+          const manager = new Manager(
+            response.managerName,
+            response.managerId,
+            response.managerEmail,
+            response.officeNumber
+          );
+          generateTeam(manager);
+        })
+        .catch(err => {
+          throw err;
+        });
+      break;
+    case 'Add an Engineer':
+      inquirer
+        .prompt(promptEngineer)
+        .then(response => {
+          const engineer = new Engineer(
+            response.engineerName,
+            response.engineerId,
+            response.engineerEmail,
+            response.engineerGithub
+          );
+          generateTeam(engineer);
+        })
+        .catch(err => {
+          throw err;
+        });
+      break;
+    case 'Add an Intern':
+      inquirer
+        .prompt(promptIntern)
+        .then(response => {
+          const intern = new Intern(
+            response.internName,
+            response.internId,
+            response.internEmail,
+            response.internSchool
+          );
+          generateTeam(intern);
+        })
+        .catch(err => {
+          throw err;
+        });
+      break;
+    case 'Show my Team!':
+      genererateHtml();
+      break;
+  }
+};
+
+// Create an Html Document
+const generateTeam = employee => {
+  const html = generateHtml.generateTeam(employee);
+
+  const htmlString = employee.getRole().toLowerCase();
+  fs.writeFile(`./templates/${htmlString}.html`, html, function(err) {
+    if (err) {
+      throw err;
+    }
+  });
+  fullTeam.push(html);
+  addMember();
+};
+
+// Add a Team member
+const addMember = () => {
+  inquirer
+    .prompt(newTeamMember)
+    .then(response => {
+      createNewTeamMember(response.newTeamMember);
+    })
+    .catch(err => {
+      console.log(err);
     });
-}
+};
 
-function generateTeam() {
-  const createTeam = fullTeam.join('');
+// Create an Html Document
+const genererateHtml = () => {
+  const mainHTML = generateHtml.generateHTMLPage();
+  const teamHTML = fullTeam.join('\n');
+  fs.writeFile(
+    `./output/generate_team.html`,
+    `${mainHTML + teamHTML}\n</div>\n</div>\n</body>\n</html>`,
+    function(err) {
+      if (err) {
+        throw err;
+      }
+    }
+  );
+};
 
-  fs.writeFileSync(outputPath, generateHtml(createTeam, 'utf-8'));
-}
+// Main App
+const mainApp = () => {
+  console.log('Please build your team');
+  createNewTeamMember('Manager');
+};
 
-managerPrompt();
+mainApp();
