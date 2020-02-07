@@ -224,10 +224,10 @@ const addMember = () => {
 
 // Create an Html Document
 const genererateHtml = () => {
-  const mainHTML = generateHtml.generateHTMLPage();
+  const outputPage = generateHtml.generateHTMLPage();
   const teamHTML = fullTeam.join('\n');
   fs.writeFile(
-    `./output/generate_team.html`,
+    `./output/team.html`,
     `${mainHTML + teamHTML}\n</div>\n</div>\n</body>\n</html>`,
     function(err) {
       if (err) {
