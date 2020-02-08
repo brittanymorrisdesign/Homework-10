@@ -10,7 +10,11 @@ const outputPath = path.resolve(__dirname, 'output', 'team.html');
 const Manager = require('./lib/manager');
 const Engineer = require('./lib/engineer');
 const Intern = require('./lib/intern');
-const generateHTMLPage = require('./lib/generateHTML');
+const renderHtml = require('./lib/generateHTML');
+// const renderHtml = {
+//   generateHTMLPage,
+//   generateEmployeeHTML,
+// }
 
 const writeFileAsync = util.promisify(fs.writeFile);
 
@@ -85,6 +89,10 @@ const promptEngineer = [
       return valid || 'Please enter an email.';
     },
   },
+
+  //Would you like to add another engineer? 
+  Yes 
+  no 
   {
     type: 'input',
     name: 'extraInformation',
@@ -157,7 +165,8 @@ const createNewTeamMember = member => {
             response.managerEmail,
             response.officeNumber
           );
-          buildTeam(manager);
+          // buildTeam(manager);
+          createNewTeamMember('Add an Engineer');
         })
         .catch(err => {
           throw err;
@@ -173,7 +182,9 @@ const createNewTeamMember = member => {
             response.engineerEmail,
             response.engineerGithub
           );
-          buildTeam(engineer);
+         // if no
+          createNewTeamMember('Add an Intern');
+          // buildTeam(engineer);
         })
         .catch(err => {
           throw err;
@@ -210,7 +221,7 @@ const mainApp = () => {
 // Create an Html Document
 function buildTeam() {
   // write team members to a html file
-  fs.writeFileSync(outputPath, mainApp(fullTeam), 'utf-8');
+  fs.writeFileSync(outputPath, renderHtml.generateHTMLPage(fullTeam), 'utf-8');
 }
 
 mainApp();
