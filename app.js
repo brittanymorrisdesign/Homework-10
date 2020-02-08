@@ -10,7 +10,7 @@ const outputPath = path.resolve(__dirname, 'output', 'team.html');
 const Manager = require('./lib/manager');
 const Engineer = require('./lib/engineer');
 const Intern = require('./lib/intern');
-const renederHtml = require('./lib/generateHTML');
+const generateHTMLPage = require('./lib/generateHTML');
 
 const writeFileAsync = util.promisify(fs.writeFile);
 
@@ -210,7 +210,7 @@ const mainApp = () => {
 // Create an Html Document
 function buildTeam() {
   // write team members to a html file
-  fs.writeFileSync(outputPath, renederHtml(fullTeam), 'utf-8');
+  fs.writeFileSync(outputPath, mainApp(fullTeam), 'utf-8');
 }
 
 mainApp();
