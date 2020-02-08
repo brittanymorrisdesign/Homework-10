@@ -2,12 +2,17 @@
 const inquirer = require('inquirer');
 const fs = require('fs');
 const path = require('path');
+const util = require('util');
+
+const outputPath = path.resolve(__dirname, 'output', 'team.html');
 
 // Classes
 const Manager = require('./lib/manager');
 const Engineer = require('./lib/engineer');
 const Intern = require('./lib/intern');
-const generateHtml = require('./lib/generateHTML');
+const renederHtml = require('./lib/generateHTML');
+
+const writeFileAsync = util.promisify(fs.writeFile);
 
 const fullTeam = [];
 
@@ -152,7 +157,7 @@ const createNewTeamMember = member => {
             response.managerEmail,
             response.officeNumber
           );
-          generateTeam(manager);
+          buildTeam(manager);
         })
         .catch(err => {
           throw err;
@@ -168,7 +173,7 @@ const createNewTeamMember = member => {
             response.engineerEmail,
             response.engineerGithub
           );
-          generateTeam(engineer);
+          buildTeam(engineer);
         })
         .catch(err => {
           throw err;
@@ -184,57 +189,16 @@ const createNewTeamMember = member => {
             response.internEmail,
             response.internSchool
           );
-          generateTeam(intern);
+          buildTeam(intern);
         })
         .catch(err => {
           throw err;
         });
       break;
     case 'Show my Team!':
-      genererateHtml();
+      buildTeam();
       break;
   }
-};
-
-// Create an Html Document
-const generateTeam = employee => {
-  const html = generateHtml.generateTeam(employee);
-
-  const htmlString = employee.getRole().toLowerCase();
-  fs.writeFile(`./templates/${htmlString}.html`, html, function(err) {
-    if (err) {
-      throw err;
-    }
-  });
-  fullTeam.push(html);
-  addMember();
-};
-
-// Add a Team member
-const addMember = () => {
-  inquirer
-    .prompt(newTeamMember)
-    .then(response => {
-      createNewTeamMember(response.newTeamMember);
-    })
-    .catch(err => {
-      console.log(err);
-    });
-};
-
-// Create an Html Document
-const genererateHtml = () => {
-  const outputPage = generateHtml.generateHTMLPage();
-  const teamHTML = fullTeam.join('\n');
-  fs.writeFile(
-    `./output/team.html`,
-    `${mainHTML + teamHTML}\n</div>\n</div>\n</body>\n</html>`,
-    function(err) {
-      if (err) {
-        throw err;
-      }
-    }
-  );
 };
 
 // Main App
@@ -242,5 +206,11 @@ const mainApp = () => {
   console.log('Please build your team');
   createNewTeamMember('Manager');
 };
+
+// Create an Html Document
+function buildTeam() {
+  // write team members to a html file
+  fs.writeFileSync(outputPath, renederHtml(fullTeam), 'utf-8');
+}
 
 mainApp();
