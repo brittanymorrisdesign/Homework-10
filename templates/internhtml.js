@@ -7,7 +7,6 @@ function internCard(data) {
         <h3 class="card-title"><i class="fas fa-user-graduate mr-2"></i>Intern</h3>
     </div>
     <div class="card-body">
-    <i class="fas fa-graduation-cap team-icon intern-icon shadow"></i>
         <ul class="list-group">
             <li class="list-group-item">ID: ${data.id}</li>
             <li class="list-group-item">Email: <a href="mailto:${data.email}">${data.email}</a></li>

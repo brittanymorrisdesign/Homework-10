@@ -7,7 +7,6 @@ function managerCard(data) {
         <h3 class="card-title"><i class="fas fa-mug-hot mr-2"></i>Manager</h3>
     </div>
     <div class="card-body">
-    <i class="fas fa-mug-hot team-icon manager-icon shadow"></i>
         <ul class="list-group">
             <li class="list-group-item">ID: ${data.id}</li>
             <li class="list-group-item">Email: <a href="mailto:${data.email}">${data.email}</a></li>

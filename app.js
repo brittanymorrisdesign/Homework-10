@@ -2,7 +2,6 @@
 const inquirer = require('inquirer');
 const fs = require('fs');
 const path = require('path');
-const util = require('util');
 
 // Sent to output folder
 const outputPath = path.resolve(__dirname, 'output', 'team.html');
@@ -36,7 +35,7 @@ const mainApp = () => {
       },
       {
         type: 'input',
-        name: 'mnagerId',
+        name: 'managerId',
         message: 'What is the employee id?',
         validate(value) {
           const valid = !isNaN(parseFloat(value));
@@ -45,7 +44,7 @@ const mainApp = () => {
       },
       {
         type: 'input',
-        name: 'email',
+        name: 'managerEmail',
         message: 'What is your managers email?',
         validate(value) {
           const valid = isNaN(value);
@@ -114,7 +113,7 @@ const mainApp = () => {
       .prompt([
         {
           type: 'input',
-          name: 'name',
+          name: 'engineerName',
           message: 'Enter engineers name:',
           validate(value) {
             const valid = isNaN(value);
@@ -123,7 +122,7 @@ const mainApp = () => {
         },
         {
           type: 'input',
-          name: 'id',
+          name: 'engineerId',
           message: 'Enter engineers id:',
           validate(value) {
             const valid = !isNaN(parseFloat(value));
@@ -132,7 +131,7 @@ const mainApp = () => {
         },
         {
           type: 'input',
-          name: 'email',
+          name: 'engineerEmail',
           message: 'Enter engineers email:',
           validate(value) {
             const valid = isNaN(value);
@@ -141,7 +140,7 @@ const mainApp = () => {
         },
         {
           type: 'input',
-          name: 'extraInformation',
+          name: 'engineerGithub',
           message: 'Enter GitHub username:',
           validate(value) {
             const valid = isNaN(value);
@@ -169,7 +168,7 @@ const mainApp = () => {
       .prompt([
         {
           type: 'input',
-          name: 'name',
+          name: 'internName',
           message: 'Enter interns name:',
           validate(value) {
             const valid = isNaN(value);
