@@ -1,5 +1,6 @@
 function mainHTML(data) {
-  return ` <!DOCTYPE html>
+  return `
+    <!DOCTYPE html>
     <html lang="en">
     
     <head>
@@ -46,5 +47,5 @@ function mainHTML(data) {
     </html>
 `;
 }
-// Export
+// export mainRender
 module.exports = mainHTML;

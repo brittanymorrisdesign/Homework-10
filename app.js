@@ -4,224 +4,226 @@ const fs = require('fs');
 const path = require('path');
 const util = require('util');
 
+// Sent to output folder
 const outputPath = path.resolve(__dirname, 'output', 'team.html');
 
 // Classes
 const Manager = require('./lib/manager');
 const Engineer = require('./lib/engineer');
 const Intern = require('./lib/intern');
-const renderHtml = require('./lib/generateHTML');
-// const renderHtml = {
-//   generateHTMLPage,
-//   generateEmployeeHTML,
-// }
+const mainHTML = require('./templates/mainHTML');
 
-const writeFileAsync = util.promisify(fs.writeFile);
+// Cards
+const managerCard = require('./templates/managerhtml');
+const internCard = require('./templates/internhtml');
+const engineerCard = require('./templates/engineerhtml');
 
 const fullTeam = [];
 
-// Create a manager
-const promptManager = [
-  {
-    type: 'input',
-    name: 'managerName',
-    message: 'What is your Managers name?',
-    validate(value) {
-      const valid = isNaN(value);
-      return valid || 'Please enter a name.';
-    },
-  },
-  {
-    type: 'input',
-    name: 'mnagerId',
-    message: 'What is the employee id?',
-    validate(value) {
-      const valid = !isNaN(parseFloat(value));
-      return valid || 'Please enter a number.';
-    },
-  },
-  {
-    type: 'input',
-    name: 'email',
-    message: 'What is your managers email?',
-    validate(value) {
-      const valid = isNaN(value);
-      return valid || 'Please enter an email.';
-    },
-  },
-  {
-    type: 'input',
-    name: 'officeNumber',
-    message: 'What is your managers office number?',
-    validate(value) {
-      const valid = !isNaN(parseFloat(value));
-      return valid || 'Please enter a number.';
-    },
-  },
-];
-
-// Create an engineer
-const promptEngineer = [
-  {
-    type: 'input',
-    name: 'name',
-    message: 'Enter the name:',
-    validate(value) {
-      const valid = isNaN(value);
-      return valid || 'Please enter a name.';
-    },
-  },
-  {
-    type: 'input',
-    name: 'id',
-    message: 'Enter the id:',
-    validate(value) {
-      const valid = !isNaN(parseFloat(value));
-      return valid || 'Please enter a number.';
-    },
-  },
-  {
-    type: 'input',
-    name: 'email',
-    message: 'Enter the email:',
-    validate(value) {
-      const valid = isNaN(value);
-      return valid || 'Please enter an email.';
-    },
-  },
-
-  //Would you like to add another engineer? 
-  Yes 
-  no 
-  {
-    type: 'input',
-    name: 'extraInformation',
-    message: 'Enter GitHub username:',
-    validate(value) {
-      const valid = isNaN(value);
-      return valid || 'Please enter a username.';
-    },
-  },
-];
-
-// Create an intern
-const promptIntern = [
-  {
-    type: 'input',
-    name: 'name',
-    message: 'Enter the name:',
-    validate(value) {
-      const valid = isNaN(value);
-      return valid || 'Please enter a name.';
-    },
-  },
-  {
-    type: 'input',
-    name: 'internId',
-    message: 'Enter the Id:',
-    validate(value) {
-      const valid = !isNaN(parseFloat(value));
-      return valid || 'Please enter a number.';
-    },
-  },
-  {
-    type: 'input',
-    name: 'internEmail',
-    message: 'Enter the email:',
-    validate(value) {
-      const valid = isNaN(value);
-      return valid || 'Please enter an email.';
-    },
-  },
-  {
-    type: 'input',
-    name: 'internSchool',
-    message: 'Enter the school:',
-    validate(value) {
-      const valid = isNaN(value);
-      return valid || 'Please enter a school.';
-    },
-  },
-];
-
-// Additional Employees
-const promptMember = {
-  type: 'list',
-  name: 'userPrompt',
-  message: 'What would you like to do?',
-  choices: ['Add an Engineer', 'Add an Intern', 'Show my Team!'],
-};
-
-// Create a team
-const createNewTeamMember = member => {
-  switch (member) {
-    case 'Manager':
-      inquirer
-        .prompt(promptManager)
-        .then(response => {
-          const manager = new Manager(
-            response.managerName,
-            response.managerId,
-            response.managerEmail,
-            response.officeNumber
-          );
-          // buildTeam(manager);
-          createNewTeamMember('Add an Engineer');
-        })
-        .catch(err => {
-          throw err;
-        });
-      break;
-    case 'Add an Engineer':
-      inquirer
-        .prompt(promptEngineer)
-        .then(response => {
-          const engineer = new Engineer(
-            response.engineerName,
-            response.engineerId,
-            response.engineerEmail,
-            response.engineerGithub
-          );
-         // if no
-          createNewTeamMember('Add an Intern');
-          // buildTeam(engineer);
-        })
-        .catch(err => {
-          throw err;
-        });
-      break;
-    case 'Add an Intern':
-      inquirer
-        .prompt(promptIntern)
-        .then(response => {
-          const intern = new Intern(
-            response.internName,
-            response.internId,
-            response.internEmail,
-            response.internSchool
-          );
-          buildTeam(intern);
-        })
-        .catch(err => {
-          throw err;
-        });
-      break;
-    case 'Show my Team!':
-      buildTeam();
-      break;
-  }
-};
-
-// Main App
+// Initial Prompt
 const mainApp = () => {
   console.log('Please build your team');
-  createNewTeamMember('Manager');
-};
+  inquirer
+    .prompt([
+      {
+        type: 'input',
+        name: 'managerName',
+        message: 'What is your Managers name?',
+        validate(value) {
+          const valid = isNaN(value);
+          return valid || 'Please enter a name.';
+        },
+      },
+      {
+        type: 'input',
+        name: 'mnagerId',
+        message: 'What is the employee id?',
+        validate(value) {
+          const valid = !isNaN(parseFloat(value));
+          return valid || 'Please enter a number.';
+        },
+      },
+      {
+        type: 'input',
+        name: 'email',
+        message: 'What is your managers email?',
+        validate(value) {
+          const valid = isNaN(value);
+          return valid || 'Please enter an email.';
+        },
+      },
+      {
+        type: 'input',
+        name: 'officeNumber',
+        message: 'What is your managers office number?',
+        validate(value) {
+          const valid = !isNaN(parseFloat(value));
+          return valid || 'Please enter a number.';
+        },
+      },
+    ])
+    .then(response => {
+      const manager = new Manager(
+        response.managerName,
+        response.managerId,
+        response.managerEmail,
+        response.officeNumber
+      );
+      const managerCardHtml = managerCard(manager);
+      fullTeam.push(managerCardHtml);
+      addTeamMembers();
+    });
 
-// Create an Html Document
-function buildTeam() {
-  // write team members to a html file
-  fs.writeFileSync(outputPath, renderHtml.generateHTMLPage(fullTeam), 'utf-8');
-}
+  // Add additional team members
+  function addTeamMembers() {
+    inquirer
+      .prompt([
+        {
+          type: 'list',
+          name: 'addMembers',
+          message: 'What would you like to do?',
+          choices: [
+            'Add an Engineer',
+            'Add an Intern',
+            "I'm all done. Let's see my team!",
+          ],
+        },
+      ])
+      .then(answers => {
+        switch (answers.addMembers) {
+          case 'Add an Engineer': {
+            promptEngineer();
+            break;
+          }
+          case 'Add an Intern': {
+            promptIntern();
+            break;
+          }
+          case "I'm all done. Let's see my team!": {
+            buildTeam();
+            break;
+          }
+        }
+      });
+  }
+
+  // Create an engineer
+  const promptEngineer = () => {
+    console.log('Please enter engineer info');
+    inquirer
+      .prompt([
+        {
+          type: 'input',
+          name: 'name',
+          message: 'Enter engineers name:',
+          validate(value) {
+            const valid = isNaN(value);
+            return valid || 'Please enter a name.';
+          },
+        },
+        {
+          type: 'input',
+          name: 'id',
+          message: 'Enter engineers id:',
+          validate(value) {
+            const valid = !isNaN(parseFloat(value));
+            return valid || 'Please enter a number.';
+          },
+        },
+        {
+          type: 'input',
+          name: 'email',
+          message: 'Enter engineers email:',
+          validate(value) {
+            const valid = isNaN(value);
+            return valid || 'Please enter an email.';
+          },
+        },
+        {
+          type: 'input',
+          name: 'extraInformation',
+          message: 'Enter GitHub username:',
+          validate(value) {
+            const valid = isNaN(value);
+            return valid || 'Please enter a username.';
+          },
+        },
+      ])
+      .then(response => {
+        const engineer = new Engineer(
+          response.engineerName,
+          response.engineerId,
+          response.engineerEmail,
+          response.engineerGithub
+        );
+        const engineerCardHtml = engineerCard(engineer);
+        fullTeam.push(engineerCardHtml);
+        addTeamMembers();
+      });
+  };
+
+  // Create an intern
+  const promptIntern = () => {
+    console.log('Please enter intern info');
+    inquirer
+      .prompt([
+        {
+          type: 'input',
+          name: 'name',
+          message: 'Enter interns name:',
+          validate(value) {
+            const valid = isNaN(value);
+            return valid || 'Please enter a name.';
+          },
+        },
+        {
+          type: 'input',
+          name: 'internId',
+          message: 'Enter interns Id:',
+          validate(value) {
+            const valid = !isNaN(parseFloat(value));
+            return valid || 'Please enter a number.';
+          },
+        },
+        {
+          type: 'input',
+          name: 'internEmail',
+          message: 'Enter interns email:',
+          validate(value) {
+            const valid = isNaN(value);
+            return valid || 'Please enter an email.';
+          },
+        },
+        {
+          type: 'input',
+          name: 'internSchool',
+          message: 'Enter interns school:',
+          validate(value) {
+            const valid = isNaN(value);
+            return valid || 'Please enter a school.';
+          },
+        },
+      ])
+      .then(response => {
+        const intern = new Intern(
+          response.internName,
+          response.internId,
+          response.internEmail,
+          response.internSchool
+        );
+        const internCardHtml = internCard(intern);
+
+        fullTeam.push(internCardHtml);
+        addTeamMembers();
+      });
+  };
+
+  // Create an Html Document
+  function buildTeam() {
+    // write team members to a html file
+    const finalTeam = fullTeam.join('');
+    fs.writeFileSync(outputPath, mainHTML(finalTeam), 'utf-8');
+  }
+};
 
 mainApp();
