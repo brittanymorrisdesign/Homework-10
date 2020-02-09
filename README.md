@@ -12,8 +12,8 @@ As a manager
 I want to generate a webpage that displays my team's basic info
 so that I have quick access to emails and GitHub profiles
 ```
-![teamapp-2](https://user-images.githubusercontent.com/44029053/74109183-3ca27200-4b4f-11ea-8502-03a8443e92d7.gif)
-![teamapp](https://user-images.githubusercontent.com/44029053/74109184-3ca27200-4b4f-11ea-865e-61af0f103593.gif)
+![teamapp](https://user-images.githubusercontent.com/44029053/74109597-c738a080-4b52-11ea-969a-ee9f906d035b.gif)
+
 # Technologies Used
 * Javascript
 * Node.js
